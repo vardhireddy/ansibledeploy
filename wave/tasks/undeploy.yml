@@ -1,0 +1,6 @@
+#This is used to get value
+---
+- name: undeploy the old solution
+  command: solman "solution_undeploy {{version}}"
+  tags:
+   - undeploy

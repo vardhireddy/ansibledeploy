@@ -1,0 +1,15 @@
+#This is used to get value
+---
+- name: Fetch the wave solution container id
+  shell: docker ps | grep solution-wave_automation | awk '{print $1}'
+  register: id
+- name: Copy the fig yml file from container
+  command: "{{item}}"
+  register: out
+  with_items:
+   - docker cp {{id.stdout}}:/solution/fig.yml .
+- name: Fetch the fig.yml file from remote machine
+  fetch:
+   src: /srv/bpadmin/fig.yml
+   dest: /home/g9983898/shared/delivery/wave/files/
+   flat: yes

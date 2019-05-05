@@ -1,0 +1,15 @@
+---
+
+localhost ansible_connection=local ansible_python_interpreter=/bin/python
+
+[Lab]
+70.43.197.136 ansible_ssh_user=bpadmin ansible_ssh_pass=bpadminpw
+
+[Stage]
+98.20.123.60 ansible_ssh_user=bpadmin ansible_ssh_pass=bpadminpw
+
+[NewLab]
+10.166.12.248 ansible_ssh_user=bpadmin ansible_ssh_pass=bpadminpw
+
+[Local]
+40.133.26.248 ansible_ssh_user=n9996489 ansible_ssh_pass=Sreeram123

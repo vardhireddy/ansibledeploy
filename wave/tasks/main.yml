@@ -1,0 +1,5 @@
+---
+- import_tasks: build.yml
+- import_tasks: undeploy.yml
+- import_tasks: deploy.yml
+- import_tasks: rollback.yml

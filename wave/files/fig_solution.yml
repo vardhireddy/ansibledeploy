@@ -1,0 +1,128 @@
+__version__: 1
+app_bar:
+  Network:
+    Infrastructure:
+      ENNI Configuration:
+        description: Configure ENNI
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /orchestrate/#/list/resources?resourceTypeId=tosca.resourceTypes.ENNIConfiguration
+      Ethernet Management:
+        description: Manage Ethernet resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /orchestrate/#/list/resources?resourceTypeId=tosca.resourceTypes.MEFService
+      Internet Management:
+        description: Manage Internet resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /orchestrate/#/list/resources?resourceTypeId=tosca.resourceTypes.INETService&sort=attribute%3Adiscovered
+      L2VPN Management:
+        description: Manage L2VPN resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /orchestrate/#/list/resources?resourceTypeId=tosca.resourceTypes.L2VPNService&sort=attribute%3Adiscovered
+      Multidomain Service Management:
+        description: Manage Multidomian Service resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /mdso/#/list/mdss
+      ODU Management:
+        description: Manage ODU resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /mdso/#/list/odus
+      WAN Service Management:
+        description: WAN Service resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /orchestrate/#/list/resources?resourceTypeId=tosca.resourceTypes.WANService&sort=attribute%3Adiscovered
+      WIM Management:
+        description: Manage WIM resources
+        icon: /orchestrate/landing-page/service-browser.svg
+        url: /mdso/#/list/wims
+apps:
+  chronos:
+    environment:
+    - YETI_SYSTEM_PROPERTY=-Ddal.replicationFactor=1 -DkafkaClient.replicationFactor=1
+      -Dicebreaker.scheduler.ImminentQueueInitialSizeKey=20000
+    image: blueplanet/chronos:7.3.3
+    ports:
+    - 8888:8080
+    volumes:
+    - /etc/hostname:/etc/physical_hostname:ro
+    - /dev/log:/dev/log
+  common-automation-app:
+    image: blueplanet/common-automation-app:1.0.6
+    max_instances: 1
+    volumes:
+    - /dev/log:/dev/log
+  mdso-topo-app:
+    environment:
+    - REPLICATION_FACTOR=1
+    image: blueplanet/mdso-topo-app:1.0.23
+    volumes:
+    - /dev/log:/dev/log
+  mdso-ui:
+    image: blueplanet/mdso-ui:2.5.16.ws
+    volumes:
+    - /dev/log:/dev/log
+  network-model-app:
+    image: blueplanet/network-model-app:18.06.0-4-ws
+    max_instances: 1
+    volumes:
+    - /dev/log:/dev/log
+  pce:
+    environment:
+    - NBI_pce_checkauth=true
+    - APP_TYPE=MDSO
+    - FRE_TOPIC=bp.stitcher.v2_0.changes.fre
+    - CLUSTER_SIZE=1
+    - HEAP_SIZE=8192M
+    image: blueplanet/bppce:2.0.18.mdso.1
+    volumes:
+    - /etc/hostname:/etc/physical_hostname:ro
+    - /dev/log:/dev/log
+  raaccedian:
+    image: blueplanet/raaccedian:18.10.WS.2
+    volumes:
+    - /dev/log:/dev/log
+    - /etc/hostname:/etc/physical_hostname:ro
+  racisco:
+    image: blueplanet/racisco:18.10.WS.1
+    volumes:
+    - /dev/log:/dev/log
+  racisconet:
+    image: blueplanet/racisconet:18.10.MAY.2
+    volumes:
+    - /dev/log:/dev/log
+  rainfnsdn:
+    image: blueplanet/bprainfnsdn:18.10.WS.1
+    volumes:
+    - /dev/log:/dev/log
+  rajuniper:
+    image: blueplanet/rajuniper:18.10.MAY.3
+    volumes:
+    - /dev/log:/dev/log
+  raonecontrol:
+    image: blueplanet/bpraonecontrol:18.10.WS.1
+    volumes:
+    - /dev/log:/dev/log
+  raoperate:
+    image: blueplanet/bpraoperateng:18.10.WS.1
+    volumes:
+    - /dev/log:/dev/log
+  stitcher:
+    environment:
+    - APP_TYPE=MDSO
+    - NBI_stitcher_checkauth=true
+    - SBIS=bpocore,kafka,zookeeper,statsd
+    - FRE_TOPIC=bp.mdso.v3.fre
+    - CLUSTER_SIZE=1
+    - HEAP_SIZE=8192M
+    image: blueplanet/bptopostitcher:2.0.26
+    volumes:
+    - /etc/hostname:/etc/physical_hostname:ro
+    - /etc/bp2/bptopostitcher:/etc/bp2/bptopostitcher
+    - /dev/log:/dev/log
+  wave-automation-app:
+    image: blueplanet/wave-automation-app:18.10.WS.8
+    max_instances: 1
+    volumes:
+    - /dev/log:/dev/log
+docker_registry: bpdr.io
+solution_name: wave_automation
+solution_version: 18.10.MAY.2

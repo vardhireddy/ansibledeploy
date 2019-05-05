@@ -1,0 +1,6 @@
+#This is used to get value
+---
+- name: deploy a old solution to rollback
+  command: solman "solution_deploy {{version}}"
+  tags:
+   - rollback
